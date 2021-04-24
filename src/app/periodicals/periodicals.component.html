@@ -1,1 +1,16 @@
-<p>periodicals works!</p>
+<div>
+    Users:
+    <div *ngFor="let user of users$ | async; index as i">
+        {{ i + 1 }}. {{ user | json }}
+    </div>
+
+    Periodicals:
+    <div *ngFor="let periodical of periodicals$ | async; index as i">
+        {{ i + 1 }}. {{ periodical | json }}
+    </div>
+
+    Circulations:
+    <div *ngFor="let circulation of circulations$ | async; index as i">
+        {{ i + 1 }}. {{ circulation | json }}
+    </div>
+</div>
