@@ -1,10 +1,21 @@
 <div class="example-container">
-    <mat-toolbar color="primary" class="example-toolbar">
-        <button mat-icon-button (click)="sidenav.toggle()">
-            <mat-icon>menu</mat-icon>
-        </button>
-        <h1 class="example-app-name">Happy life</h1>
+    <mat-toolbar color="" class="example-toolbar d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+            <button mat-icon-button (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            &nbsp;
+            <a routerLink="/">
+                <div class="d-flex">
+                    <img src="assets/circle.png" width="30">
+                    &nbsp;
+                    <h1 class="example-app-name">Happy life</h1>
+                </div>
+            </a>
+        </div>
+        <button mat-stroked-button *ngIf="auth.user | async" (click)="logout()">Logout</button>
     </mat-toolbar>
+    <mat-divider></mat-divider>
 
     <mat-sidenav-container class="example-sidenav-container">
         <mat-sidenav #sidenav mode="side" [(opened)]="opened">
