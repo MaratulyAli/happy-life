@@ -11,7 +11,9 @@ import { IPeriodical } from '../_shared/models/periodical.model';
 export class PeriodicalsComponent implements OnInit {
   periodicals$!: Observable<IPeriodical[]>;
 
-  constructor(private afs: AngularFirestore) {
+  constructor(
+    private afs: AngularFirestore,
+  ) {
   }
 
   ngOnInit(): void {
