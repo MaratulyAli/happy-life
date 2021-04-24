@@ -1,12 +1,9 @@
-export interface ICirculation {
-    id: number;
-    startsAt: Date;
-    periodical_id: number;
-    items: ICirculationItem[];
-}
+import { ISubscriber } from './periodical.model';
 
-export interface ICirculationItem {
-    id: number;
-    user_id: number;
-    deadline: Date;
+export interface ICirculation {
+    id: string;
+    nextDeadlineAt: number;
+    nextId: string;
+    periodicalId: string;
+    queue: ISubscriber[];
 }

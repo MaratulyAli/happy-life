@@ -1,13 +1,15 @@
-<div>
-    Users:
+<div class="list">
+    Users (used to get data from):
     <div *ngFor="let user of users$ | async; index as i">
         {{ i + 1 }}. {{ user | json }}
     </div>
+    Queue (used for sorting):
+    <div *ngFor="let circulation of (circulations$ | async)">
+        <div *ngFor="let item of circulation.queue; index as i">
+            {{ i + 1 }}. {{ item | json }}
+        </div>
+    </div>
 </div>
 
-<div>
-    Circulations:
-    <div *ngFor="let circulation of circulations$ | async; index as i">
-        {{ i + 1 }}. {{ circulation | json }}
-    </div>
+<div class="map">
 </div>

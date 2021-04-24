@@ -1,12 +1,13 @@
 export interface IUser {
     id: number;
-    auth_id: string;
-    first_name: string;
-    last_name: string;
+    authId: string;
+    firstName: string;
+    lastName: string;
     location: IGeoPoint;
+    role: 'employee' | 'librarian';
 }
 
 export interface IGeoPoint {
-    lat: string;
-    lon: string;
+    latitude: string;
+    longitude: string;
 }
