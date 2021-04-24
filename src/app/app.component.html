@@ -1,1 +1,24 @@
-<router-outlet></router-outlet>
+<div class="example-container">
+    <mat-toolbar color="primary" class="example-toolbar">
+        <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+        <h1 class="example-app-name">Happy life</h1>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav #sidenav mode="side" [(opened)]="opened">
+            <mat-nav-list>
+                <a routerLink="/periodicals" routerLinkActive="router-link-active">
+                    <mat-list-item>
+                        Periodicals
+                    </mat-list-item>
+                </a>
+            </mat-nav-list>
+        </mat-sidenav>
+
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

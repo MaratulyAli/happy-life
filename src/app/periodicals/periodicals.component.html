@@ -1,16 +1,20 @@
 <div>
-    Users:
-    <div *ngFor="let user of users$ | async; index as i">
-        {{ i + 1 }}. {{ user | json }}
-    </div>
+    <h2>Periodicals</h2>
 
-    Periodicals:
-    <div *ngFor="let periodical of periodicals$ | async; index as i">
-        {{ i + 1 }}. {{ periodical | json }}
-    </div>
-
-    Circulations:
-    <div *ngFor="let circulation of circulations$ | async; index as i">
-        {{ i + 1 }}. {{ circulation | json }}
+    <div class="d-flex justify-content-center">
+        <div class="mt-2 mb-1" *ngFor="let periodical of periodicals$ | async; index as i">
+            <mat-card class="example-card">
+                <img mat-card-image [src]="periodical.photoUrl" alt="{{periodical.title}}">
+                <a routerLink="/periodical/{{periodical.id}}">
+                    <mat-card-title>{{ periodical.title }}</mat-card-title>
+                </a>
+                <mat-card-content>
+                    <p>{{ periodical.description }}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <a routerLink="/periodical/{{periodical.id}}"><button mat-flat-button>VIEW</button></a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
     </div>
 </div>
