@@ -20,8 +20,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTabsModule } from '@angular/material/tabs';
+
 import { PeriodicalComponent } from './periodical/periodical.component';
 import { MapBoxComponent } from './map-box/map-box.component';
+import { CirculationComponent } from './periodical/circulation/circulation.component';
+import { CreateCirculationComponent } from './create-circulation/create-circulation.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +35,9 @@ import { MapBoxComponent } from './map-box/map-box.component';
     PeriodicalsComponent,
     PeriodicalComponent,
     PageNotFoundComponent,
-    MapBoxComponent
+    MapBoxComponent,
+    CirculationComponent,
+    CreateCirculationComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +57,9 @@ import { MapBoxComponent } from './map-box/map-box.component';
     MatIconModule,
     MatListModule,
     MatCardModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

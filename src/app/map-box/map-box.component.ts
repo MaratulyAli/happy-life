@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 
@@ -7,8 +7,9 @@ import { environment } from 'src/environments/environment';
   templateUrl: './map-box.component.html',
   styleUrls: ['./map-box.component.scss']
 })
-export class MapBoxComponent implements OnInit {
-  @Input() data!: any;
+export class MapBoxComponent implements OnInit, AfterViewInit {
+  // @Input() data!: any;
+  @ViewChild('mapElement') mapElement!: ElementRef;
 
   map!: mapboxgl.Map;
 
@@ -19,27 +20,23 @@ export class MapBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.map = new mapboxgl.Map({
+      container: this.mapElement.nativeElement,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      zoom: 12,
+      center: [-77.0353, 38.8895]
+    });
+
     this.initMap();
   }
 
   private initMap(): void {
     const monument: mapboxgl.LngLatLike = [-77.0353, 38.8895];
 
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: 'mapbox://styles/mapbox/streets-v11',
-      zoom: 12,
-      center: monument
-    });
-
     /// Add map controls
-    const popup = new mapboxgl.Popup({ offset: 25 }).setText(
-      'Construction on the Washington Monument began in 1848.'
-    );
-    const activePopup = new mapboxgl.Popup({ offset: 25 }).setText(
-      'Construction on the Washington Monument began in 1848.'
-    );
-
     const markerEl = this.r2.createElement('div');
     this.r2.addClass(markerEl, 'marker');
     const activeMarkerEl = this.r2.createElement('div');
@@ -53,7 +50,13 @@ export class MapBoxComponent implements OnInit {
       .setLngLat(monument)
       .addTo(this.map);
 
-    // create the marker
+    const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+      'Construction on the Washington Monument began in 1848.'
+    );
+    const activePopup = new mapboxgl.Popup({ offset: 25 }).setText(
+      'Construction on the Washington Monument began in 1848.'
+    );
+
     marker.setPopup(popup).addTo(this.map);
     activeMarker.setPopup(activePopup).addTo(this.map);
 
