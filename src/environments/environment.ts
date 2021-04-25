@@ -4,6 +4,7 @@
 
 export const environment = {
   production: false,
+
   firebase: {
     apiKey: 'AIzaSyDMTSj80yLSDqrK_Aia2dNFC_gtrbT6wok',
     authDomain: 'circulation-of-periodica-fe145.firebaseapp.com',
@@ -12,6 +13,10 @@ export const environment = {
     messagingSenderId: '866734948673',
     appId: '1:866734948673:web:49aa14482ae382e8a421c0',
     measurementId: 'G-N5PQ5LE0ND'
+  },
+
+  mapbox: {
+    accessToken: 'pk.eyJ1IjoiMTgwMTAxMDMxIiwiYSI6ImNrbndkOWpybjB2am4ycHJ2b2M0aHA4cDkifQ.GHRvGvM1CRsz_GaC-oebkw'
   }
 };
 

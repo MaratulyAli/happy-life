@@ -21,13 +21,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { PeriodicalComponent } from './periodical/periodical.component';
+import { MapBoxComponent } from './map-box/map-box.component';
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PeriodicalsComponent,
     PeriodicalComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    MapBoxComponent
   ],
   imports: [
     BrowserModule,

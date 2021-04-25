@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ICirculation } from '../_shared/models/circulation.model';
+import { IPeriodical } from '../_shared/models/periodical.model';
 import { IUser } from '../_shared/models/user.model';
 
 @Component({
@@ -12,7 +12,8 @@ import { IUser } from '../_shared/models/user.model';
   styleUrls: ['./periodical.component.scss']
 })
 export class PeriodicalComponent implements OnInit {
-  users$!: Observable<IUser[]>;
+  periodical$!: Observable<IPeriodical[]>;
+  allUsers$!: Observable<IUser[]>;
   circulations$!: Observable<ICirculation[]>;
 
   constructor(
@@ -23,23 +24,16 @@ export class PeriodicalComponent implements OnInit {
   ngOnInit(): void {
     const periodicalId = this.route.snapshot.paramMap.get('id');
 
+    this.periodical$ = this.afs.collection<IPeriodical>(
+      'periodicals',
+      ref => ref.where('id', '==', periodicalId)
+    ).valueChanges();
+
+    this.allUsers$ = this.afs.collection<IUser>('users').valueChanges();
+
     this.circulations$ = this.afs.collection<ICirculation>(
       'circulations',
       ref => ref.where('periodicalId', '==', periodicalId)
-    ).valueChanges().pipe(
-      switchMap(c => {
-        const items = c[0]?.queue;
-
-        if (!items) {
-          return of(c);
-        }
-
-        this.users$ = this.afs.collection<IUser>(
-          'users', ref => ref.where('id', 'in', items.map(i => i.userId))
-        ).valueChanges();
-
-        return of(c);
-      })
-    );
+    ).valueChanges();
   }
 }

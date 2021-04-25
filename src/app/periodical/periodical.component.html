@@ -1,6 +1,6 @@
 <div class="list">
-    Users (used to get data from):
-    <div *ngFor="let user of users$ | async; index as i">
+    All users (used to get data from, not used in view):
+    <div *ngFor="let user of allUsers$ | async; index as i">
         {{ i + 1 }}. {{ user | json }}
     </div>
     Queue (used for sorting):
