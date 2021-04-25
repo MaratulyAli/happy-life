@@ -1,3 +1,23 @@
+<div *ngIf="(periodical$ | async) as periodical" class="d-flex justify-content-between m-5">
+    <h2>{{ periodical.title }}</h2>
+
+    <ng-container *ngTemplateOutlet="(isSubscribed$ | async) ? unsub : sub">
+
+    </ng-container>
+    <ng-template #sub>
+        <button mat-raised-button color="primary" (click)="subscribe()">
+            Subscribe&nbsp;
+            <mat-icon [inline]="true">done</mat-icon>
+        </button>
+    </ng-template>
+    <ng-template #unsub>
+        <button mat-button color="primary" (click)="unsubscribe()">
+            Unsubscribe&nbsp;
+            <mat-icon [inline]="true">close</mat-icon>
+        </button>
+    </ng-template>
+</div>
+
 <div class="list">
     All users (used to get data from, not used in view):
     <div *ngFor="let user of allUsers$ | async; index as i">
@@ -9,7 +29,4 @@
             {{ i + 1 }}. {{ item | json }}
         </div>
     </div>
-</div>
-
-<div class="map">
 </div>
