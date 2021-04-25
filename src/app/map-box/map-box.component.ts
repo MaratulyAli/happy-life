@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { environment } from 'src/environments/environment';
 
@@ -90,6 +90,10 @@ export class MapBoxComponent implements OnInit, AfterViewInit {
           'line-width': 8
         }
       });
+    });
+
+    this.map.on('idle', () => {
+      this.map.resize();
     });
   }
 }
