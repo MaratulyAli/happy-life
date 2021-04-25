@@ -4,10 +4,11 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import firebase from 'firebase';
 import { Observable } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { ICirculation } from '../_shared/models/circulation.model';
 import { IPeriodical } from '../_shared/models/periodical.model';
 import { IUser } from '../_shared/models/user.model';
+import { CirculationService } from '../_shared/services/circulation.service';
 
 @Component({
   selector: 'app-periodical',
@@ -28,6 +29,7 @@ export class PeriodicalComponent implements OnInit {
     private afs: AngularFirestore,
     private auth: AngularFireAuth,
     private route: ActivatedRoute,
+    public circulationService: CirculationService,
   ) { }
 
   async ngOnInit(): Promise<void> {

@@ -26,16 +26,19 @@
 </div>
 
 <div>
+    <mat-list>
+        <mat-list-item><b>Circulations:</b></mat-list-item>
+    </mat-list>
+
     <mat-form-field appearance="fill">
         <mat-label>Select a circulation</mat-label>
         <mat-select [(value)]="selected">
-            <mat-option *ngFor="let circulation of (circulations$ | async)" [value]="circulation">
+            <mat-option *ngFor="let circulation of (circulations$ | async)" [value]="circulation"
+                (click)="circulationService.next(selected)">
                 {{ circulation.id }}
             </mat-option>
         </mat-select>
     </mat-form-field>
 
-    <p>You selected: {{selected | json}}</p>
-
-    <app-circulation [data]="selected"></app-circulation>
+    <app-circulation></app-circulation>
 </div>
