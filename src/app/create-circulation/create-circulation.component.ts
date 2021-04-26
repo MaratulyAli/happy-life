@@ -81,7 +81,7 @@ export class CreateCirculationComponent implements OnInit {
     await newDoc.set({
       id: newDoc.ref.id,
       nextDeadlineAt: threeDaysAhead,
-      nextId: subscribers[0].id,
+      nextUserId: subscribers[0].id,
       periodicalId: this.periodicalId,
       filePath,
       queue: subscribers.map(s => s.id)
