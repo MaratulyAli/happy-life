@@ -3,6 +3,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { AngularFireStorageModule, BUCKET } from '@angular/fire/storage';
 import { BrowserModule } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 
@@ -23,6 +24,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { PeriodicalComponent } from './periodical/periodical.component';
 import { MapBoxComponent } from './map-box/map-box.component';
@@ -37,7 +40,7 @@ import { CreateCirculationComponent } from './create-circulation/create-circulat
     PageNotFoundComponent,
     MapBoxComponent,
     CirculationComponent,
-    CreateCirculationComponent
+    CreateCirculationComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,7 @@ import { CreateCirculationComponent } from './create-circulation/create-circulat
     AngularFireAuthModule,
     AngularFirestoreModule,
     AngularFireAuthGuardModule,
+    AngularFireStorageModule,
 
     FormsModule,
 
@@ -60,8 +64,12 @@ import { CreateCirculationComponent } from './create-circulation/create-circulat
     MatSelectModule,
     MatFormFieldModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
   ],
-  providers: [],
+  providers: [
+    { provide: BUCKET, useValue: 'gs://circulation-of-periodica-fe145.appspot.com' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

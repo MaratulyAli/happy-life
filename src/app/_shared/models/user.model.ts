@@ -1,9 +1,12 @@
+import firebase from 'firebase';
+
 export interface IUser {
-    authId: string;
+    id: string;
     firstName: string;
     lastName: string;
     location: IGeoPoint;
     role: 'employee' | 'librarian';
+    subscriptions: firebase.firestore.FieldValue;
 }
 
 export interface IGeoPoint {
