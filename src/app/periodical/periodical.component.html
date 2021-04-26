@@ -1,5 +1,9 @@
 <div *ngIf="(periodical$ | async) as periodical" class="d-flex justify-content-between m-5">
-    <h2>{{ periodical.title }}</h2>
+    <div class="d-flex align-items-center">
+        <img [src]="periodical.photoUrl" alt="periodical photo" class="photo">
+        <div style="width: 50px;"></div>
+        <h2>{{ periodical.title }}</h2>
+    </div>
 
     <ng-container *ngTemplateOutlet="(isSubscribed$ | async) ? unsub : sub"></ng-container>
     <ng-template #sub>
@@ -14,6 +18,10 @@
             <mat-icon [inline]="true">close</mat-icon>
         </button>
     </ng-template>
+
+    <!-- <div class="mt-3">
+            Uploaded file is here: <a [href]="link"><button>Download</a>
+        </div> -->
 </div>
 
 <div>

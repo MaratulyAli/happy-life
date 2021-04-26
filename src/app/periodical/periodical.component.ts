@@ -53,15 +53,14 @@ export class PeriodicalComponent implements OnInit {
     this.circulations$ = this.afs.collection<ICirculation>(
       'circulations',
       ref => ref.where('periodicalId', '==', this.periodicalId)
-    ).valueChanges().pipe(
-    );
+    ).valueChanges();
   }
 
   async subscribe(): Promise<void> {
     this.afs.doc(`periodicals/${this.periodicalId}`).update({
       subscribers: firebase.firestore.FieldValue.arrayUnion(this.userId)
     });
-    this.afs.doc(`users/${this.userId}`).update({
+    this.afs.doc<IUser>(`users/${this.userId}`).update({
       subscriptions: firebase.firestore.FieldValue.arrayUnion(this.periodicalId)
     });
   }
