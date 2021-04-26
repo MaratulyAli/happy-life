@@ -1,9 +1,32 @@
 <div class="d-flex flex-column align-items-center mt-5">
-    <h2>Please login</h2>
-
-    <div class="d-flex flex-column">
-        <div>Email: <input type="text" [(ngModel)]="email" required></div>
-        <div>Password: <input type="password" [(ngModel)]="password" required></div>
-        <button (click)="login(email, password)">Login</button>
+    <div class="mb-4">
+        <h2 style="text-align: center;">Welcome to Happy life!</h2>
+        <p style="color: rgba(0, 0, 0, 0.5); text-align: center;">
+            Ask for login and password from your administration
+        </p>
     </div>
+
+    <form (ngSubmit)="login()">
+        <div class="d-flex flex-column justify-content-around">
+            <mat-form-field appearance="fill">
+                <mat-label>Enter your email</mat-label>
+                <input matInput placeholder="pat@gmail.com" [formControl]="email" required>
+                <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Enter your password</mat-label>
+                <input matInput [formControl]="password" [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                <mat-error *ngIf="password">{{getPasswordErrorMessage()}}</mat-error>
+            </mat-form-field>
+
+            <button type="submit" mat-flat-button color="primary">
+                Login
+            </button>
+        </div>
+    </form>
 </div>

@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { first, map, tap } from 'rxjs/operators';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 import { IUser } from './_shared/models/user.model';
 
 @Component({
@@ -15,6 +15,7 @@ import { IUser } from './_shared/models/user.model';
 export class AppComponent implements OnInit {
   opened = false;
   role$!: Observable<string | undefined>;
+  user?: IUser;
 
   constructor(
     public auth: AngularFireAuth,
@@ -28,7 +29,11 @@ export class AppComponent implements OnInit {
     this.role$ = this.fs.doc<IUser>(`users/${user?.uid}`)
       .valueChanges()
       .pipe(
-        map(u => u?.role)
+        map(u => {
+          this.user = u;
+
+          return u?.role;
+        })
       );
   }
 

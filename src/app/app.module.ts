@@ -12,7 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PeriodicalsComponent } from './periodicals/periodicals.component';
 
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -23,6 +23,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -56,6 +57,7 @@ import { LoadingSpinnerComponent } from './_shared/components/loading-spinner/lo
     AngularFireStorageModule,
 
     FormsModule,
+    ReactiveFormsModule,
 
     MatSidenavModule,
     MatButtonModule,
@@ -65,6 +67,7 @@ import { LoadingSpinnerComponent } from './_shared/components/loading-spinner/lo
     MatCardModule,
     MatSelectModule,
     MatFormFieldModule,
+    MatInputModule,
     MatTabsModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
