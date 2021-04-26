@@ -1,52 +1,65 @@
-<div *ngIf="(periodical$ | async) as periodical" class="d-flex justify-content-between m-5">
-    <div class="d-flex align-items-center">
-        <img [src]="periodical.photoUrl" alt="periodical photo" class="photo">
-        <div style="width: 50px;"></div>
-        <h2>{{ periodical.title }}</h2>
+<div *ngIf="(periodical$ | async) as periodical else loading" class="m-5">
+
+    <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+            <img [src]="periodical.photoUrl" alt="periodical photo" class="photo">
+            <div style="width: 50px;"></div>
+            <h2>{{ periodical.title }}</h2>
+        </div>
+
+        <ng-container *ngTemplateOutlet="(isSubscribed$ | async) ? unsub : sub"></ng-container>
+        <ng-template #sub>
+            <button mat-raised-button color="primary" (click)="subscribe()">
+                Subscribe&nbsp;
+                <mat-icon [inline]="true">done_outline</mat-icon>
+            </button>
+        </ng-template>
+        <ng-template #unsub>
+            <button mat-button color="primary" (click)="unsubscribe()">
+                Unsubscribe&nbsp;
+                <mat-icon [inline]="true">clear</mat-icon>
+            </button>
+        </ng-template>
     </div>
 
-    <ng-container *ngTemplateOutlet="(isSubscribed$ | async) ? unsub : sub"></ng-container>
-    <ng-template #sub>
-        <button mat-raised-button color="primary" (click)="subscribe()">
-            Subscribe&nbsp;
-            <mat-icon [inline]="true">done</mat-icon>
-        </button>
-    </ng-template>
-    <ng-template #unsub>
-        <button mat-button color="primary" (click)="unsubscribe()">
-            Unsubscribe&nbsp;
-            <mat-icon [inline]="true">close</mat-icon>
-        </button>
-    </ng-template>
+    <div>
+        <mat-list *ngIf="subscribers$ | async as subscribers">
+            <mat-list-item><b>{{subscribers.length}} Subscribers</b></mat-list-item>
+            <mat-list-item *ngFor="let user of subscribers; index as i">
+                {{i + 1}}. {{user.firstName}} {{user.lastName}}
+            </mat-list-item>
+        </mat-list>
+    </div>
 
-    <!-- <div class="mt-3">
-            Uploaded file is here: <a [href]="link"><button>Download</a>
-        </div> -->
+    <div>
+        <mat-list>
+            <mat-list-item><b>Circulations</b></mat-list-item>
+        </mat-list>
+
+        <div *ngIf="circulations$ | async as circulations" class="d-flex">
+            <mat-form-field appearance="fill">
+                <mat-label>Select a circulation</mat-label>
+                <mat-select [(value)]="selected">
+                    <mat-option *ngFor="let circulation of circulations; index as i" [value]="circulation"
+                        (click)="circulationService.next(selected)">
+                        {{ i + 1 }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div style="width: 20px;"></div>
+
+            <div class="mt-3">
+                <a [href]="selected?.filePath">
+                    <button mat-stroked-button [disabled]="!selected">Download</button>
+                </a>
+            </div>
+        </div>
+
+        <app-circulation></app-circulation>
+    </div>
 </div>
 
-<div>
-    <mat-list>
-        <mat-list-item><b>Subscribers:</b></mat-list-item>
-        <mat-list-item *ngFor="let user of subscribers$ | async; index as i">
-            {{i + 1}}. {{user.firstName}} {{user.lastName}}
-        </mat-list-item>
-    </mat-list>
-</div>
-
-<div>
-    <mat-list>
-        <mat-list-item><b>Circulations:</b></mat-list-item>
-    </mat-list>
-
-    <mat-form-field appearance="fill">
-        <mat-label>Select a circulation</mat-label>
-        <mat-select [(value)]="selected">
-            <mat-option *ngFor="let circulation of (circulations$ | async)" [value]="circulation"
-                (click)="circulationService.next(selected)">
-                {{ circulation.id }}
-            </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-    <app-circulation></app-circulation>
-</div>
+<ng-template #loading>
+    <app-loading-spinner></app-loading-spinner>
+</ng-template>

@@ -31,6 +31,7 @@ import { PeriodicalComponent } from './periodical/periodical.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { CirculationComponent } from './periodical/circulation/circulation.component';
 import { CreateCirculationComponent } from './create-circulation/create-circulation.component';
+import { LoadingSpinnerComponent } from './_shared/components/loading-spinner/loading-spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +42,7 @@ import { CreateCirculationComponent } from './create-circulation/create-circulat
     MapBoxComponent,
     CirculationComponent,
     CreateCirculationComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

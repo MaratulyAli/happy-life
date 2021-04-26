@@ -1,12 +1,14 @@
-<div class="m-5">
+<div class="m-5" *ngIf="periodicals$ | async as periodicals else loading">
     <div class="m-2">
         <mat-card-title>Periodicals</mat-card-title>
     </div>
 
     <div class="d-flex flex-wrap container mt-5">
-        <div class="m-2" *ngFor="let periodical of periodicals$ | async; index as i">
+        <div class="m-2" *ngFor="let periodical of periodicals; index as i">
             <mat-card class="example-card">
-                <img mat-card-image [src]="periodical.photoUrl" alt="{{periodical.title}}">
+                <div class="img-container">
+                    <img mat-card-image [src]="periodical.photoUrl" alt="{{periodical.title}}">
+                </div>
                 <a routerLink="/periodical/{{periodical.id}}">
                     <mat-card-title>{{ periodical.title }}</mat-card-title>
                 </a>
@@ -20,3 +22,7 @@
         </div>
     </div>
 </div>
+
+<ng-template #loading>
+    <app-loading-spinner></app-loading-spinner>
+</ng-template>
