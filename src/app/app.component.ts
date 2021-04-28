@@ -5,6 +5,8 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map, switchMap, tap } from 'rxjs/operators';
+import { ICirculation } from './_shared/models/circulation.model';
+import { IPeriodical } from './_shared/models/periodical.model';
 import { IUser } from './_shared/models/user.model';
 
 @Component({
@@ -16,6 +18,8 @@ export class AppComponent implements OnInit {
   opened = false;
   role$!: Observable<string | undefined>;
   user?: IUser;
+  notifications$!: Observable<ICirculation[]>;
+  notificationPeriodicals$!: Observable<IPeriodical[]>;
 
   constructor(
     public auth: AngularFireAuth,
@@ -35,6 +39,24 @@ export class AppComponent implements OnInit {
           return u?.role;
         })
       );
+
+    this.notifications$ = this.fs.collection<ICirculation>(
+      'circulations',
+      ref => ref.where('nextUserId', '==', user?.uid)
+    ).valueChanges();
+
+    this.notifications$.subscribe(
+      c => {
+        const ids = c.map(circulation => circulation.periodicalId);
+
+        if (ids.length === 0) { return; }
+
+        this.notificationPeriodicals$ = this.fs.collection<IPeriodical>(
+          'periodicals',
+          ref => ref.where('id', 'in', ids)
+        ).valueChanges();
+      }
+    );
   }
 
   public async logout(): Promise<void> {

@@ -27,6 +27,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatBadgeModule } from '@angular/material/badge';
 
 import { PeriodicalComponent } from './periodical/periodical.component';
 import { MapBoxComponent } from './map-box/map-box.component';
@@ -71,6 +73,8 @@ import { LoadingSpinnerComponent } from './_shared/components/loading-spinner/lo
     MatTabsModule,
     MatProgressSpinnerModule,
     MatProgressBarModule,
+    MatMenuModule,
+    MatBadgeModule
   ],
   providers: [
     { provide: BUCKET, useValue: 'gs://circulation-of-periodica-fe145.appspot.com' }
