@@ -57,35 +57,46 @@ export class MapBoxComponent implements OnInit, AfterViewInit {
   }
 
   private initMap(members: IUser[]): void {
-    console.log('members', members);
-    const monument: mapboxgl.LngLatLike = [-77.0353, 38.8895];
+    this.addMarkers(members);
 
-    /// Add map controls
-    const markerEl = this.r2.createElement('div');
-    this.r2.addClass(markerEl, 'marker');
-    const activeMarkerEl = this.r2.createElement('div');
-    this.r2.addClass(activeMarkerEl, 'marker');
-    this.r2.addClass(activeMarkerEl, 'active-marker');
+    this.addRoutes(members);
 
-    const marker = new mapboxgl.Marker({ element: markerEl })
-      .setLngLat([-77.0353, 38.8795])
-      .addTo(this.map);
-    const activeMarker = new mapboxgl.Marker({ element: activeMarkerEl })
-      .setLngLat(monument)
-      .addTo(this.map);
+    this.map.on('idle', () => {
+      this.map.resize();
+    });
+  }
 
-    const popup = new mapboxgl.Popup({ offset: 25 }).setText(
-      'Construction on the Washington Monument began in 1848.'
-    );
-    const activePopup = new mapboxgl.Popup({ offset: 25 }).setText(
-      'Construction on the Washington Monument began in 1848.'
-    );
+  private addMarkers(members: IUser[]): void {
+    members.forEach(m => {
+      console.log(m);
 
-    marker.setPopup(popup).addTo(this.map);
-    activeMarker.setPopup(activePopup).addTo(this.map);
+      const markerEl = this.r2.createElement('div');
+      this.r2.addClass(markerEl, 'marker');
 
+      if (this.c.nextUserId === m.id) { this.r2.addClass(markerEl, 'active-marker'); }
 
+      const marker = new mapboxgl.Marker({ element: markerEl })
+        .setLngLat([+m.location.longitude, +m.location.latitude])
+        .addTo(this.map);
+
+      const popup = new mapboxgl.Popup({ offset: 25 }).setText(
+        m.firstName + ' ' + m.lastName
+      );
+
+      marker.setPopup(popup).addTo(this.map);
+    });
+  }
+
+  private addRoutes(members: IUser[]): void {
     this.map.on('load', () => {
+      if (this.map.getSource('route')) {
+        return;
+      }
+
+      const coords = members.map(
+        m => [+m.location.longitude, +m.location.latitude]
+      );
+
       this.map.addSource('route', {
         type: 'geojson',
         data: {
@@ -93,10 +104,7 @@ export class MapBoxComponent implements OnInit, AfterViewInit {
           properties: {},
           geometry: {
             type: 'LineString',
-            coordinates: [
-              [-77.0353, 38.8895],
-              [-77.0353, 38.8795],
-            ]
+            coordinates: coords
           }
         }
       });
@@ -114,10 +122,6 @@ export class MapBoxComponent implements OnInit, AfterViewInit {
           'line-width': 8
         }
       });
-    });
-
-    this.map.on('idle', () => {
-      this.map.resize();
     });
   }
 }
