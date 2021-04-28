@@ -2,6 +2,7 @@ import firebase from 'firebase';
 
 export interface IUser {
     id: string;
+    email: string;
     firstName: string;
     lastName: string;
     location: IGeoPoint;

@@ -2,7 +2,14 @@
     <mat-tab label="Members">
         <mat-list>
             <mat-list-item *ngFor="let member of members$ | async">
-                {{member.firstName}} {{member.lastName}}
+                <span>{{member.firstName}} {{member.lastName}}</span>&nbsp;
+                <span style="color: grey; font-size: 10px;">
+                    {{member.email}}
+                </span>&nbsp;
+                <mat-icon color="accent" *ngIf="c.nextUserId === member.id">
+                    book
+                </mat-icon>
+                <mat-divider></mat-divider>
             </mat-list-item>
         </mat-list>
     </mat-tab>

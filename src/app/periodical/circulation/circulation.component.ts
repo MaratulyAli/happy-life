@@ -14,6 +14,7 @@ import { CirculationService } from 'src/app/_shared/services/circulation.service
 })
 export class CirculationComponent implements OnInit {
   members$!: Observable<IUser[]>;
+  c!: ICirculation;
 
   constructor(
     private afs: AngularFirestore,
@@ -23,6 +24,9 @@ export class CirculationComponent implements OnInit {
 
   ngOnInit(): void {
     this.members$ = this.circulationService.circulation$.pipe(
+      map(
+        c => { this.c = c; console.log('c', c); return c; }
+      ),
       switchMap(
         (c: ICirculation) => this.afs.collection<IUser>(
           'users',
