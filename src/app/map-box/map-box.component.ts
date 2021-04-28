@@ -1,6 +1,11 @@
 import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
 import * as mapboxgl from 'mapbox-gl';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { ICirculation } from '../_shared/models/circulation.model';
+import { IUser } from '../_shared/models/user.model';
+import { CirculationService } from '../_shared/services/circulation.service';
 
 @Component({
   selector: 'app-map-box',
@@ -8,13 +13,15 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./map-box.component.scss']
 })
 export class MapBoxComponent implements OnInit, AfterViewInit {
-  // @Input() data!: any;
   @ViewChild('mapElement') mapElement!: ElementRef;
 
+  c!: ICirculation;
   map!: mapboxgl.Map;
 
   constructor(
     private r2: Renderer2,
+    private afs: AngularFirestore,
+    public circulationService: CirculationService,
   ) {
     (mapboxgl as any).accessToken = environment.mapbox.accessToken;
   }
@@ -23,17 +30,34 @@ export class MapBoxComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.map = new mapboxgl.Map({
-      container: this.mapElement.nativeElement,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      zoom: 12,
-      center: [-77.0353, 38.8895]
-    });
+    this.circulationService.circulation$
+      .pipe(
+        map(
+          c => { this.c = c; console.log('c', c); return c; }
+        ),
+        switchMap(
+          c => this.afs.collection<IUser>(
+            'users',
+            ref => ref.where('circulations', 'array-contains', c.id)
+          ).valueChanges()
+        )
+      )
+      .subscribe(
+        members => {
+          this.map = new mapboxgl.Map({
+            container: this.mapElement.nativeElement,
+            style: 'mapbox://styles/mapbox/streets-v11',
+            zoom: 12,
+            center: [-77.0353, 38.8895]
+          });
 
-    this.initMap();
+          this.initMap(members);
+        }
+      );
   }
 
-  private initMap(): void {
+  private initMap(members: IUser[]): void {
+    console.log('members', members);
     const monument: mapboxgl.LngLatLike = [-77.0353, 38.8895];
 
     /// Add map controls

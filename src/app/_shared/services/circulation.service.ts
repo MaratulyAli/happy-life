@@ -6,14 +6,14 @@ import { ICirculation } from '../models/circulation.model';
   providedIn: 'root'
 })
 export class CirculationService {
-  private subject = new Subject<ICirculation>();
-  public observable: Observable<ICirculation>;
+  private circulationSub = new Subject<ICirculation>();
+  public circulation$: Observable<ICirculation>;
 
   constructor() {
-    this.observable = this.subject.asObservable();
+    this.circulation$ = this.circulationSub.asObservable();
   }
 
   next(circulation: ICirculation): void {
-    this.subject.next(circulation);
+    this.circulationSub.next(circulation);
   }
 }
