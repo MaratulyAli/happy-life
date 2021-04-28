@@ -8,6 +8,7 @@ export interface IUser {
     location: IGeoPoint;
     role: 'employee' | 'librarian';
     subscriptions: firebase.firestore.FieldValue;
+    circulations: firebase.firestore.FieldValue;
 }
 
 export interface IGeoPoint {

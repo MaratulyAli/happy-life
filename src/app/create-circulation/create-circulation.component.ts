@@ -89,14 +89,16 @@ export class CreateCirculationComponent implements OnInit {
 
     const users = this.afs.collection<IUser>(
       `users`,
-      ref => ref.where('id', '==', this.periodicalId)
+      ref => ref.where('subscriptions', 'array-contains', this.periodicalId)
     );
 
     await users.get().toPromise().then(snapshots => {
+      console.log('snapshots', snapshots);
+
       if (snapshots.size > 0) {
         snapshots.forEach(orderItem => {
           users.doc(orderItem.id).update({
-            subscriptions: firebase.firestore.FieldValue.arrayUnion(newDoc.ref.id)
+            circulations: firebase.firestore.FieldValue.arrayUnion(newDoc.ref.id)
           });
         });
       }
