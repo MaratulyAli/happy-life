@@ -48,7 +48,7 @@ export class MapBoxComponent implements OnInit, AfterViewInit {
             container: this.mapElement.nativeElement,
             style: 'mapbox://styles/mapbox/streets-v11',
             zoom: 12,
-            center: [-77.0353, 38.8895]
+            center: [+members[0].location.longitude, +members[0].location.latitude]
           });
 
           this.initMap(members);
