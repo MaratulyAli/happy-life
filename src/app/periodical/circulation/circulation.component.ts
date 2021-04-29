@@ -25,7 +25,7 @@ export class CirculationComponent implements OnInit {
   ngOnInit(): void {
     this.members$ = this.circulationService.circulation$.pipe(
       map(
-        c => { this.c = c; console.log('c', c); return c; }
+        c => { this.c = c; return c; }
       ),
       switchMap(
         (c: ICirculation) => this.afs.collection<IUser>(

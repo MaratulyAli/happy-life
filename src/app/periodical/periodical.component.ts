@@ -3,8 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import firebase from 'firebase';
-import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { Observable, Operator, Subscriber } from 'rxjs';
+import { first, map, switchMap, tap } from 'rxjs/operators';
 import { ICirculation } from '../_shared/models/circulation.model';
 import { IPeriodical } from '../_shared/models/periodical.model';
 import { IUser } from '../_shared/models/user.model';
@@ -24,6 +24,8 @@ export class PeriodicalComponent implements OnInit {
   circulations$!: Observable<ICirculation[]>;
 
   selected!: ICirculation;
+
+  isMeNext$!: Observable<boolean>;
 
   constructor(
     private afs: AngularFirestore,
@@ -54,6 +56,13 @@ export class PeriodicalComponent implements OnInit {
       'circulations',
       ref => ref.where('periodicalId', '==', this.periodicalId)
     ).valueChanges();
+
+    this.isMeNext$ = this.afs.collection<ICirculation>(
+      'circulations',
+      ref => ref
+        .where('id', '==', this.selected?.id || '')
+        .where('nextUserId', '==', this.userId))
+      .valueChanges().pipe(map(c => c.length > 0));
   }
 
   async subscribe(): Promise<void> {
@@ -72,5 +81,32 @@ export class PeriodicalComponent implements OnInit {
     this.afs.doc(`users/${this.userId}`).update({
       subscriptions: firebase.firestore.FieldValue.arrayRemove(this.periodicalId)
     });
+  }
+
+  passNext(): void {
+    this.afs.collection<ICirculation>(
+      'circulations',
+      ref => ref.where('id', '==', this.selected.id)
+    ).valueChanges({ idField: 'docId' }).pipe(
+      switchMap(
+        circulations => {
+          const circulation = circulations[0];
+
+          const selectedIndex = circulation.queue.findIndex(m => m === this.userId);
+
+          if (selectedIndex === circulation.queue.length - 1) {
+            return this.afs.collection('circulations').doc<ICirculation>(circulation.docId).update({
+              nextUserId: undefined
+            });
+          }
+
+          const nextUserId = circulation.queue[selectedIndex + 1];
+
+          return this.afs.collection('circulations').doc<ICirculation>(circulation.docId).update({
+            nextUserId
+          });
+        }
+      )
+    ).subscribe();
   }
 }
